@@ -1,0 +1,43 @@
+# ============================================================
+# SD II AutoML Project - Requirements
+# Python 3.10 or 3.11 recommended (NOT 3.12+)
+# Install with: pip install -r requirements.txt
+# ============================================================
+
+# --- Core Data Stack ---
+numpy
+pandas
+scipy
+
+# --- Machine Learning ---
+scikit-learn
+shap==0.46.0
+joblib
+
+# --- Visualization ---
+matplotlib
+seaborn
+
+# --- LLM (Claude Sonnet 4.6 via Anthropic SDK) ---
+anthropic
+
+# --- RAG (TF-IDF based, no LLM needed) ---
+pypdf
+python-docx
+
+# --- Reporting ---
+reportlab
+
+# --- Backend ---
+flask
+flask-cors
+gunicorn
+
+# --- File Handling ---
+openpyxl
+xlrd
+
+# --- Utilities ---
+python-dotenv
+requests
+tqdm
