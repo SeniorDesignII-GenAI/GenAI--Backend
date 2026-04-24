@@ -131,17 +131,17 @@ ${customInstructions ? `Custom instructions from user:\n${customInstructions}\n`
 
 ## 1. Executive Summary
 
-Write a concise overview (plain prose, concise bullet points, no sub-headings, no numbered list items) covering:
+Write a concise overview covering:
 - What the dataset represents and its scope (rows, columns, domain)
 - The primary objective of the analysis (predicting '${target_column}')
-- A high-level summary of the most important findings (top 3 drivers and their impact)
+- A high-level summary of the most important findings (top 3 drivers and their impact), This should be presented in bullet points
 - The best-performing model and its accuracy
 - Make any key fact or figures bold in text
 
 ## 2. Key Findings
 
 Write one analytical paragraph per major insight. Each paragraph MUST:
-- Start with a plain sentence — add numbering like "2.1". to segregate the sections.
+- Start with a bold subheading — add numbering like "2.1". to segregate the sections.
 - under each chart, add a one line concise caption that simply states what the graph is (NO ADDITIONAL DETAILS). It should be italic and the color of the captions text should be grey.
 - State the finding, explain the directional impact on '${target_column}', cite specific numbers from the statistical analysis, and describe what the referenced chart reveals.
 - Reference the relevant chart naturally (e.g., "As illustrated in Chart 1..." or "Chart 3 reveals that...").
