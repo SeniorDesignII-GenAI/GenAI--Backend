@@ -1,13 +1,10 @@
 /**
  * SessionContext — shared state across the pipeline pages.
  *
- * Holds the sessionId returned by POST /api/upload, the payloads
- * needed by every step (dataPreview, edaData, taskInfo, mlData),
- * and UI choices that flow forward (selectedChartIds for the
- * 4-chart confirmation gate before the narrative).
- *
- * The Python pipeline on :5001 is the source of truth for data;
- * the Node server on :4000 owns narrative streaming + PDF export.
+ * Only lightweight scalar fields are persisted to sessionStorage to avoid
+ * hitting the ~5MB limit with large mlData / dataPreview blobs.
+ * Heavy data (dataPreview, edaData, mlData, narrativeMarkdown) lives in
+ * memory only — a full page refresh will require re-running the pipeline.
  */
 import { createContext, useContext, useMemo, useState } from "react";
 
@@ -16,24 +13,54 @@ const SessionContext = createContext(null);
 export const PY_API = process.env.REACT_APP_PY_API || "http://localhost:5001";
 export const NODE_API = process.env.REACT_APP_REPORT_API || "http://localhost:4000";
 
+const SS_KEY = "genai_session";
+
+function loadSession() {
+  try {
+    const raw = sessionStorage.getItem(SS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch { return {}; }
+}
+
+function saveSession(patch) {
+  try {
+    const current = loadSession();
+    sessionStorage.setItem(SS_KEY, JSON.stringify({ ...current, ...patch }));
+  } catch {}
+}
+
+function persist(setter, key) {
+  return (val) => {
+    setter(val);
+    saveSession({ [key]: val });
+  };
+}
+
 export function SessionProvider({ children }) {
-  const [sessionId, setSessionId] = useState(null);
-  const [datasetName, setDatasetName] = useState("");
-  const [instructions, setInstructions] = useState("");
+  const s = loadSession();
+
+  // Lightweight — persisted to sessionStorage
+  const [sessionId, _setSessionId] = useState(s.sessionId ?? null);
+  const [datasetName, _setDatasetName] = useState(s.datasetName ?? "");
+  const [instructions, _setInstructions] = useState(s.instructions ?? "");
+  const [selectedChartIds, _setSelectedChartIds] = useState(s.selectedChartIds ?? [1, 2, 3, 4]);
+  const [narrativeKey, _setNarrativeKey] = useState(s.narrativeKey ?? "");
+
+  // Heavy blobs — memory only, cleared on full page refresh
   const [dataPreview, setDataPreview] = useState(null);
   const [edaData, setEdaData] = useState(null);
   const [edaReport, setEdaReport] = useState("");
   const [taskInfo, setTaskInfo] = useState(null);
   const [chartRequests, setChartRequests] = useState([]);
   const [mlData, setMlData] = useState(null);
-  const [selectedChartIds, setSelectedChartIds] = useState([1, 2, 3, 4]);
-  // Cache the completed narrative so navigating away from /narrative and back
-  // doesn't re-stream the report from Claude (expensive + slow).
-  // narrativeKey tags which (sessionId + selectedChartIds) combination the
-  // cached markdown corresponds to — a change invalidates the cache.
   const [narrativeMarkdown, setNarrativeMarkdown] = useState("");
-  const [narrativeKey, setNarrativeKey] = useState("");
   const [pipelineError, setPipelineError] = useState(null);
+
+  const setSessionId = persist(_setSessionId, "sessionId");
+  const setDatasetName = persist(_setDatasetName, "datasetName");
+  const setInstructions = persist(_setInstructions, "instructions");
+  const setSelectedChartIds = persist(_setSelectedChartIds, "selectedChartIds");
+  const setNarrativeKey = persist(_setNarrativeKey, "narrativeKey");
 
   const value = useMemo(
     () => ({
@@ -51,18 +78,19 @@ export function SessionProvider({ children }) {
       narrativeKey, setNarrativeKey,
       pipelineError, setPipelineError,
       reset: () => {
-        setSessionId(null);
-        setDatasetName("");
-        setInstructions("");
+        sessionStorage.removeItem(SS_KEY);
+        _setSessionId(null);
+        _setDatasetName("");
+        _setInstructions("");
+        _setSelectedChartIds([1, 2, 3, 4]);
+        _setNarrativeKey("");
         setDataPreview(null);
         setEdaData(null);
         setEdaReport("");
         setTaskInfo(null);
         setChartRequests([]);
         setMlData(null);
-        setSelectedChartIds([1, 2, 3, 4]);
         setNarrativeMarkdown("");
-        setNarrativeKey("");
         setPipelineError(null);
       },
     }),

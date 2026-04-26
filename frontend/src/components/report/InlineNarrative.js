@@ -42,7 +42,7 @@ const mdComponents = {
     />
   ),
   h3: ({ node, ...p }) => (
-    <h3 className="text-lg font-semibold text-text-primary mt-6 mb-2" {...p} />
+    <h3 className="text-lg font-semibold text-text-primary mt-10 mb-2" {...p} />
   ),
   h4: ({ node, ...p }) => (
     <h4 className="text-base font-semibold text-text-primary mt-4 mb-2" {...p} />
@@ -89,15 +89,29 @@ const mdComponents = {
     <thead style={{ background: REPORT_COLORS.COLOR_LIGHT }} {...p} />
   ),
   tbody: ({ node, ...p }) => <tbody {...p} />,
-  tr: ({ node, ...p }) => <tr className="border-t border-gray-100" {...p} />,
+  tr: ({ node, children, ...p }) => {
+    const getNodeText = (n) => !n ? "" : n.type === "text" ? n.value : (n.children || []).map(getNodeText).join("");
+    const firstCell = (node?.children || []).find((n) => n.type === "element");
+    const firstCellText = getNodeText(firstCell).trim();
+    const isTotal = /^total$/i.test(firstCellText);
+    return (
+      <tr
+        className={isTotal ? "font-semibold" : "border-t border-gray-100"}
+        style={isTotal ? { borderTop: "2px solid #F97316", background: "#FFF7ED" } : {}}
+        {...p}
+      >
+        {children}
+      </tr>
+    );
+  },
   th: ({ node, ...p }) => (
     <th
-      className="text-left font-semibold py-2.5 px-4 text-text-primary border-b border-gray-200"
+      className="text-left font-semibold py-2.5 px-4 text-text-primary border-b border-gray-200 [&>p]:mb-0"
       {...p}
     />
   ),
   td: ({ node, ...p }) => (
-    <td className="py-2 px-4 text-text-primary align-top" {...p} />
+    <td className="py-2 px-4 text-text-primary align-top [&>p]:mb-0" {...p} />
   ),
 };
 

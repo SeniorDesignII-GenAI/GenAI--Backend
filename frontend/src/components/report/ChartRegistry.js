@@ -32,9 +32,9 @@ import {
   PolarGrid, PolarAngleAxis, PolarRadiusAxis, ComposedChart,
 } from "recharts";
 
-const COLOR_PRIMARY = "#ED8B00";
-const COLOR_DARK = "#CF7B00";
-const COLOR_LIGHT = "#FFF3E0";
+const COLOR_PRIMARY = "#F97316";
+const COLOR_DARK = "#EA580C";
+const COLOR_LIGHT = "#FFF7ED";
 const COLOR_RISK = "#D14343";
 const COLOR_PROTECT = "#3F8F4D";
 // Unified orange-family palette — used for EVERY chart regardless of what
@@ -42,12 +42,12 @@ const COLOR_PROTECT = "#3F8F4D";
 // multi-series charts cycle through shades of orange so series stay
 // distinguishable without breaking the single-colour brand look.
 const ORANGE_PALETTE = [
-  "#ED8B00", // primary
-  "#B86600", // darker
-  "#FFB547", // lighter
-  "#CF7B00", // dark
-  "#FFD59E", // pale
-  "#8A4B00", // deep
+  "#F97316", // primary
+  "#EA580C", // darker
+  "#FB923C", // lighter
+  "#C2410C", // dark
+  "#FED7AA", // pale
+  "#9A3412", // deep
 ];
 
 const tooltipStyle = {
@@ -110,9 +110,9 @@ const fmtNum = (v) => {
 
 function ChartFrame({ title, subtitle, children, height = 280 }) {
   return (
-    <div className="chart-block bg-white border border-gray-200 rounded-lg p-5 my-6">
-      <h4 className="text-sm font-semibold text-text-primary mb-1">{title}</h4>
-      {subtitle && <p className="text-xs text-text-secondary mb-3">{subtitle}</p>}
+    <div className="chart-block bg-white border border-gray-200 rounded-lg px-5 pt-8 pb-5 my-6">
+      <h4 className="text-lg font-semibold text-text-primary mb-1">{title}</h4>
+      {subtitle && <p className="text-xs text-text-secondary mb-6">{subtitle}</p>}
       <ResponsiveContainer width="100%" height={height}>
         {children}
       </ResponsiveContainer>
@@ -361,7 +361,7 @@ function DynamicChart({ config }) {
   const needRotate = data.some((d) => String(d[xKey] ?? "").length > 8);
   return (
     <ChartFrame title={title} subtitle={insight} height={320}>
-      <BarChart data={data} margin={{ top: 10, right: 20, left: 20, bottom: needRotate ? 40 : 30 }}>
+      <BarChart data={data} margin={{ top: 30, right: 20, left: 20, bottom: needRotate ? 40 : 30 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" vertical={false} />
         <XAxis
           dataKey={xKey}

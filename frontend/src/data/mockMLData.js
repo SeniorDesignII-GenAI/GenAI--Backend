@@ -54,71 +54,97 @@ export const mockMLData = {
     { feature: "NumPromotions",       importance: 0.063, direction: "negative" },
   ],
 
-  chartData: {
-    is_classification: true,
-    positive_label: "Yes",
-    feature_1: {
-      feature: "OvertimeHours",
-      bands: [
-        { label: "0",     rate: 0.08, count: 1500 },
-        { label: "1–5",   rate: 0.13, count: 2200 },
-        { label: "6–10",  rate: 0.21, count: 1800 },
-        { label: "11–20", rate: 0.34, count: 1600 },
-        { label: "20+",   rate: 0.46, count: 900  },
+  chartData: [
+    {
+      id: 1,
+      title: "Attrition Rate by Overtime Band",
+      insight: "Attrition risk climbs as overtime increases.",
+      chartType: "BarChart",
+      xKey: "overtime_band",
+      yKeys: ["attrition_rate"],
+      data: [
+        { overtime_band: "0", attrition_rate: 0.08 },
+        { overtime_band: "1-5", attrition_rate: 0.13 },
+        { overtime_band: "6-10", attrition_rate: 0.21 },
+        { overtime_band: "11-20", attrition_rate: 0.34 },
+        { overtime_band: "20+", attrition_rate: 0.46 },
       ],
     },
-    feature_2: {
-      feature: "DistanceFromOffice",
-      bands: [
-        { label: "0–5",   rate: 0.09, count: 1820 },
-        { label: "5–10",  rate: 0.12, count: 1640 },
-        { label: "10–20", rate: 0.18, count: 2010 },
-        { label: "20–30", rate: 0.24, count: 1290 },
-        { label: "30–50", rate: 0.31, count: 870  },
-        { label: "50+",   rate: 0.39, count: 370  },
+    {
+      id: 2,
+      title: "Attrition Rate by Commute Distance",
+      insight: "Longer commute is associated with higher attrition.",
+      chartType: "LineChart",
+      xKey: "distance_band",
+      yKeys: ["attrition_rate"],
+      data: [
+        { distance_band: "0-5", attrition_rate: 0.09 },
+        { distance_band: "5-10", attrition_rate: 0.12 },
+        { distance_band: "10-20", attrition_rate: 0.18 },
+        { distance_band: "20-30", attrition_rate: 0.24 },
+        { distance_band: "30-50", attrition_rate: 0.31 },
       ],
     },
-    feature_3: {
-      feature: "YearsSinceLastPromo",
-      bands: [
-        { label: "0",  rate: 0.08, count: 1200 },
-        { label: "1",  rate: 0.11, count: 1500 },
-        { label: "2",  rate: 0.14, count: 1600 },
-        { label: "3",  rate: 0.19, count: 1300 },
-        { label: "4",  rate: 0.26, count: 1000 },
-        { label: "5+", rate: 0.34, count: 1400 },
+    {
+      id: 3,
+      title: "Attrition vs Promotion Gap",
+      insight: "More years since promotion corresponds to higher risk.",
+      chartType: "AreaChart",
+      xKey: "years_since_promo",
+      yKeys: ["attrition_rate"],
+      data: [
+        { years_since_promo: "0", attrition_rate: 0.08 },
+        { years_since_promo: "1", attrition_rate: 0.11 },
+        { years_since_promo: "2", attrition_rate: 0.14 },
+        { years_since_promo: "3", attrition_rate: 0.19 },
+        { years_since_promo: "4", attrition_rate: 0.26 },
+        { years_since_promo: "5+", attrition_rate: 0.34 },
       ],
     },
-    feature_4: {
-      feature: "JobSatisfaction",
-      bands: [
-        { label: "Very Low",  rate: 0.41, count: 500  },
-        { label: "Low",       rate: 0.28, count: 1200 },
-        { label: "Medium",    rate: 0.17, count: 2800 },
-        { label: "High",      rate: 0.09, count: 2600 },
-        { label: "Very High", rate: 0.05, count: 900  },
+    {
+      id: 4,
+      title: "Attrition by Job Satisfaction",
+      insight: "Low satisfaction groups carry disproportionate attrition risk.",
+      chartType: "PieChart",
+      xKey: "satisfaction",
+      yKeys: ["attrition_rate"],
+      data: [
+        { satisfaction: "Very Low", attrition_rate: 0.41 },
+        { satisfaction: "Low", attrition_rate: 0.28 },
+        { satisfaction: "Medium", attrition_rate: 0.17 },
+        { satisfaction: "High", attrition_rate: 0.09 },
+        { satisfaction: "Very High", attrition_rate: 0.05 },
       ],
     },
-    feature_5: {
-      feature: "WorkLifeBalance",
-      bands: [
-        { label: "Poor",      rate: 0.38, count: 600  },
-        { label: "Fair",      rate: 0.22, count: 1900 },
-        { label: "Good",      rate: 0.14, count: 3800 },
-        { label: "Excellent", rate: 0.07, count: 1700 },
+    {
+      id: 5,
+      title: "Risk Drivers Comparison",
+      insight: "Top factors show clear spread in relative importance.",
+      chartType: "BarChart",
+      xKey: "feature",
+      yKeys: ["importance"],
+      data: [
+        { feature: "OvertimeHours", importance: 0.184 },
+        { feature: "DistanceFromOffice", importance: 0.142 },
+        { feature: "YearsSinceLastPromo", importance: 0.131 },
+        { feature: "JobSatisfaction", importance: 0.118 },
       ],
     },
-    feature_6: {
-      feature: "CompanyTenure",
-      bands: [
-        { label: "<1y",   rate: 0.32, count: 900  },
-        { label: "1–3y",  rate: 0.22, count: 2400 },
-        { label: "3–5y",  rate: 0.15, count: 1800 },
-        { label: "5–10y", rate: 0.10, count: 2100 },
-        { label: "10y+",  rate: 0.07, count: 800  },
+    {
+      id: 6,
+      title: "Protective Factors Trend",
+      insight: "Higher work-life balance and tenure reduce attrition.",
+      chartType: "ComposedChart",
+      xKey: "factor",
+      yKeys: ["attrition_rate", "retention_index"],
+      data: [
+        { factor: "Poor WLB", attrition_rate: 0.38, retention_index: 0.62 },
+        { factor: "Fair WLB", attrition_rate: 0.22, retention_index: 0.78 },
+        { factor: "Good WLB", attrition_rate: 0.14, retention_index: 0.86 },
+        { factor: "Excellent WLB", attrition_rate: 0.07, retention_index: 0.93 },
       ],
     },
-  },
+  ],
 };
 
 /**
@@ -149,5 +175,50 @@ A grid view of four secondary drivers shows how each independently moves attriti
 
 ## Developer Section
 
-Model selection ran a 5-fold cross-validated tournament. Runtime breakdown and the full leaderboard are below.
+### AutoML Tournament Results
+
+The AutoML tournament tested 3 models using 5-fold cross-validation, optimising for F1 (weighted). Gradient Boosting Classifier emerged as the winner with a score of 0.8740.
+
+**Model Performance Leaderboard:**
+
+| Rank | Algorithm | F1 (weighted) Score |
+|------|-----------|---------------------|
+| 1 | Gradient Boosting Classifier | 0.8740 |
+| 2 | Random Forest Classifier | 0.8510 |
+| 3 | Extra Trees Classifier | 0.8380 |
+
+The winner outperformed the runner-up by 0.023 points, indicating a meaningful margin with stable cross-validated scores.
+
+### Feature Importance Rankings
+
+Importance was extracted using impurity-based feature_importances_ from the winning Gradient Boosting Classifier. OvertimeHours dominates with a relative importance nearly 30% higher than the next feature.
+
+**Feature Importance Detailed Rankings:**
+
+| Rank | Feature | Coefficient | Relative Importance | Directional Impact |
+|------|---------|-------------|---------------------|--------------------|
+| 1 | OvertimeHours | 0.184000 | 100.0% | Higher values → Higher 'Attrition' |
+| 2 | DistanceFromOffice | 0.142000 | 77.2% | Higher values → Higher 'Attrition' |
+| 3 | YearsSinceLastPromo | 0.131000 | 71.2% | Higher values → Higher 'Attrition' |
+| 4 | JobSatisfaction | 0.118000 | 64.1% | Higher values → Lower 'Attrition' |
+
+The top three features all relate to workplace stress and stagnation, while satisfaction acts as a protective factor.
+
+### Stage-by-Stage Runtime Breakdown
+
+Total pipeline time was 34.4s, with the AutoML tournament accounting for the majority of compute.
+
+**Detailed Runtime Analysis:**
+
+| Stage | Process | Duration (seconds) | Percentage of Total |
+|-------|---------|--------------------|---------------------|
+| 1 | Data Ingestion | 0.4 | 1.2% |
+| 2 | Preprocessing | 1.1 | 3.2% |
+| 3 | EDA | 0.8 | 2.3% |
+| 4 | Task Identification | 0.2 | 0.6% |
+| 5 | AutoML Tournament | 27.3 | 79.4% |
+| 6 | ML Insights | 4.6 | 13.4% |
+| Total | Complete Pipeline | 34.4 | 100.0% |
+
+The AutoML tournament dominated at 79.4% of total runtime, which is expected given the cross-validated model search across multiple algorithms.
 `;

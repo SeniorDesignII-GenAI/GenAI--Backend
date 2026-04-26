@@ -58,9 +58,7 @@ export default function Narrative() {
   const reportRef = useRef(null);
 
   useEffect(() => {
-    if (!sessionId && !ctxMlData) {
-      navigate("/", { replace: true });
-    } else if (sessionId && !ctxMlData) {
+    if (sessionId && !ctxMlData) {
       navigate("/automl-insights", { replace: true });
     }
   }, [sessionId, ctxMlData, navigate]);
@@ -102,6 +100,19 @@ export default function Narrative() {
           buf += decoder.decode(value, { stream: true });
           setMarkdown(buf);
         }
+        // Ensure every selected chart marker is present — Claude occasionally
+        // omits one. Inject any missing markers just before the Developer Section.
+        const missingIds = allowedIds.filter(
+          (id) => !new RegExp(`<chart\\s+id=["']${id}["']`).test(buf)
+        );
+        if (missingIds.length > 0) {
+          const inject = missingIds.map((id) => `\n\n<chart id="${id}" />\n`).join("");
+          const devIdx = buf.search(/^##\s+(?:3\.?\s+)?Developer Section/im);
+          buf = devIdx !== -1
+            ? buf.slice(0, devIdx) + inject + buf.slice(devIdx)
+            : buf + inject;
+        }
+
         // Stream completed successfully — persist the completed markdown to
         // the session context so subsequent mounts short-circuit above.
         setNarrativeMarkdown(buf);
@@ -133,7 +144,10 @@ export default function Narrative() {
       const blocks = reportRef.current.querySelectorAll(".chart-block");
       const captures = [];
       for (const el of blocks) {
+        const titleEl = el.querySelector("h4");
+        if (titleEl) titleEl.style.fontSize = "20px";
         const canvas = await html2canvas(el, { backgroundColor: "#ffffff", scale: 2 });
+        if (titleEl) titleEl.style.fontSize = "";
         captures.push(canvas.toDataURL("image/png"));
       }
       const res = await fetch(`${NODE_API}/api/export`, {
@@ -165,7 +179,7 @@ export default function Narrative() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div>
       <div className="flex items-end justify-between mb-2">
         <div>
           <h1 className="text-3xl font-bold text-text-primary">AI Narrative</h1>
@@ -185,14 +199,14 @@ export default function Narrative() {
       </div>
 
       {streaming && (
-        <div className="text-xs text-text-secondary mb-4 px-3 py-2 rounded bg-orange-50 border border-orange-100 flex items-center gap-2">
+        <div className="text-xs text-text-secondary mb-4 px-3 py-2 rounded bg-primary-light border border-primary-200 flex items-center gap-2">
           <Loader2 size={14} className="animate-spin text-primary" />
           Claude is writing the narrative…
         </div>
       )}
 
       {error && (
-        <div className="text-xs text-text-secondary mb-4 px-3 py-2 rounded bg-orange-50 border border-orange-100">
+        <div className="text-xs text-text-secondary mb-4 px-3 py-2 rounded bg-primary-light border border-primary-200">
           {error}
         </div>
       )}

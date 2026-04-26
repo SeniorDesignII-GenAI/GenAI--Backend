@@ -9,7 +9,7 @@ import { useSession } from "../context/SessionContext";
 export default function DataPreview() {
   const navigate = useNavigate();
   const { sessionId, datasetName, dataPreview, edaData } = useSession();
-  const [expandedIdx, setExpandedIdx] = useState(-1);
+  const [expandedIdxs, setExpandedIdxs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   // Without a session there's nothing to display — bounce home.
@@ -51,28 +51,29 @@ export default function DataPreview() {
         <div className="flex-1 min-w-0">
           <div className="bg-white rounded-xl border border-gray-200">
             <div className="flex items-center justify-between px-6 py-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center text-primary shrink-0">
                   <Grid3X3 size={20} />
                 </div>
-                <div>
-                  <p className="text-base font-semibold text-text-primary">Dataset Preview</p>
+                <div className="space-y-1">
+                  <p className="text-base font-semibold text-text-primary leading-tight">Dataset Preview</p>
                   {datasetName && (
-                    <p className="text-xs font-medium text-primary truncate max-w-[220px]">{datasetName}</p>
+                    <p className="text-xs font-medium text-primary truncate max-w-[220px] leading-tight">{datasetName}</p>
                   )}
-                  <p className="text-sm text-text-secondary">
-                    {totalRows.toLocaleString()} records &bull; {pageSize} per page
-                  </p>
                 </div>
               </div>
+              <p className="text-sm text-text-secondary">
+                {totalRows.toLocaleString()} records &bull; {pageSize} per page
+              </p>
             </div>
 
             <div className="px-6 pb-2 border-t border-gray-100 overflow-x-auto">
-              <table className="w-full">
+              <div className="inline-block min-w-full">
+              <table className="min-w-full">
                 <thead>
                   <tr>
                     {columns.map((col) => (
-                      <th key={col} className="text-left text-xs font-semibold text-text-secondary tracking-wider py-3 pr-4">
+                      <th key={col} className="text-left text-xs font-semibold text-text-secondary tracking-wider py-3 pr-4 last:pr-6">
                         {col}
                       </th>
                     ))}
@@ -82,7 +83,7 @@ export default function DataPreview() {
                   {pagedRows.map((row, i) => (
                     <tr key={i} className="border-t border-gray-50">
                       {rawColumns.map((key) => (
-                        <td key={key} className="py-3.5 pr-4 text-sm text-text-primary whitespace-nowrap">
+                        <td key={key} className="py-3.5 pr-4 text-sm text-text-primary whitespace-nowrap last:pr-6">
                           {prettyCell(row[key])}
                         </td>
                       ))}
@@ -90,6 +91,7 @@ export default function DataPreview() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
 
             <div className="flex items-center justify-between px-6 py-3 border-t border-gray-100">
@@ -146,11 +148,15 @@ export default function DataPreview() {
                 <div
                   key={idx}
                   className={`rounded-xl border transition-colors ${
-                    expandedIdx === idx ? "border-primary bg-orange-50/30" : "border-gray-100"
+                    expandedIdxs.includes(idx) ? "border-primary bg-orange-50/30" : "border-gray-100"
                   }`}
                 >
                   <button
-                    onClick={() => setExpandedIdx(expandedIdx === idx ? -1 : idx)}
+                    onClick={() =>
+                      setExpandedIdxs((prev) =>
+                        prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
+                      )
+                    }
                     className="w-full flex items-center justify-between p-3 text-left"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
@@ -162,13 +168,13 @@ export default function DataPreview() {
                         </p>
                       </div>
                     </div>
-                    {expandedIdx === idx ? (
+                    {expandedIdxs.includes(idx) ? (
                       <ChevronUp size={16} className="text-text-secondary shrink-0" />
                     ) : (
                       <ChevronDown size={16} className="text-text-secondary shrink-0" />
                     )}
                   </button>
-                  {expandedIdx === idx && (
+                  {expandedIdxs.includes(idx) && (
                     <div className="px-3 pb-3 space-y-2">
                       <p className="text-xs text-text-secondary leading-relaxed">{item.expandedText}</p>
                       {item.nullVal && item.newVal && (
@@ -187,10 +193,15 @@ export default function DataPreview() {
             <div className="mt-5 pt-4 border-t border-gray-100">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm text-text-secondary">Data Quality Score</p>
-                <p className="text-sm font-semibold text-primary">{qualityScore}%</p>
+                <p className={`text-sm font-semibold ${qualityScore >= 80 ? "text-orange-500" : qualityScore >= 50 ? "text-orange-400" : "text-orange-300"}`}>
+                  {qualityScore}%
+                </p>
               </div>
               <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                <div className="h-full bg-yellow-500 rounded-full" style={{ width: `${qualityScore}%` }} />
+                <div
+                  className={`h-full rounded-full ${qualityScore >= 80 ? "bg-orange-500" : qualityScore >= 50 ? "bg-orange-300" : "bg-orange-200"}`}
+                  style={{ width: `${qualityScore}%` }}
+                />
               </div>
             </div>
           </div>
