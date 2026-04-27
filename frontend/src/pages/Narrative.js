@@ -180,7 +180,7 @@ export default function Narrative() {
 
   return (
     <div>
-      <div className="flex items-end justify-between mb-2">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-2">
         <div>
           <h1 className="text-3xl font-bold text-text-primary">AI Narrative</h1>
           <p className="text-text-secondary mt-1">
@@ -213,7 +213,7 @@ export default function Narrative() {
 
       <div
         ref={reportRef}
-        className="bg-white rounded-xl border border-gray-200 px-10 py-8"
+        className="bg-white rounded-xl border border-gray-200 px-4 sm:px-10 py-8"
       >
         <InlineNarrative markdown={filteredMarkdown} mlData={mlData} />
       </div>

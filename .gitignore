@@ -1,0 +1,23 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+report-server/node_modules/
+
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/*.pyc
+backend/automl_cache/
+backend/eda_cache/
+backend/model_cache/
+
+# Build output
+frontend/build/
+
+# OS
+.DS_Store

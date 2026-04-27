@@ -14,11 +14,15 @@ const navItems = [
   { to: "/narrative", label: "Narrative", icon: FileText },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   return (
-    <aside className="fixed top-16 left-0 w-[180px] h-[calc(100vh-4rem)] bg-white border-r border-gray-200 flex flex-col z-40">
+    <aside
+      className={`fixed top-16 left-0 w-[180px] h-[calc(100vh-4rem)] bg-white border-r border-gray-200 flex flex-col z-40 transition-transform duration-200
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+    >
       <NavLink
         to="/"
+        onClick={onClose}
         className="flex items-center gap-2 px-4 py-3 text-sm text-text-secondary hover:text-text-primary transition-colors"
       >
         <ArrowLeft size={16} />
@@ -32,6 +36,7 @@ export default function Sidebar() {
           <NavLink
             key={to}
             to={to}
+            onClick={onClose}
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 text-sm transition-colors border-l-3 ${
                 isActive

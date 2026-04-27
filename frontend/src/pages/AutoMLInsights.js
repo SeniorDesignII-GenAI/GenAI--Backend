@@ -27,7 +27,7 @@ function TargetPickerModal({ candidates, onPick, onClose, autoTarget }) {
             <label
               key={c.column}
               className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer ${
-                choice === c.column ? "border-primary bg-orange-50/50" : "border-gray-100"
+                choice === c.column ? "border-primary bg-primary/10" : "border-gray-100"
               }`}
             >
               <input
@@ -62,7 +62,7 @@ function TargetPickerModal({ candidates, onPick, onClose, autoTarget }) {
           </button>
           <button
             onClick={() => onPick(choice)}
-            className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-orange-600"
+            className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-600"
           >
             Use {choice}
           </button>
@@ -77,7 +77,7 @@ function DirectionPill({ direction }) {
     positive: { cls: "bg-red-50 text-red-600 border-red-100", label: "Pushes up" },
     negative: { cls: "bg-green-50 text-green-700 border-green-100", label: "Pushes down" },
     mixed:    { cls: "bg-gray-50 text-text-secondary border-gray-200", label: "Mixed" },
-    "varies by category": { cls: "bg-orange-50 text-primary border-orange-100", label: "Varies by category" },
+    "varies by category": { cls: "bg-primary-light text-primary border-primary-200", label: "Varies by category" },
   };
   const m = map[direction] || map.mixed;
   return (
@@ -154,7 +154,7 @@ export default function AutoMLInsights() {
 
   return (
     <div>
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <h1 className="text-3xl font-bold text-text-primary">AutoML Insights</h1>
         {mlData && (
           <div className="flex items-center gap-2 text-sm text-text-secondary">
@@ -193,7 +193,7 @@ export default function AutoMLInsights() {
           {/* ── 1. Summary ─────────────────────────────────────────── */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+              <div className="w-9 h-9 rounded-lg bg-primary-light flex items-center justify-center text-primary">
                 <Sparkles size={18} />
               </div>
               <div>
@@ -215,7 +215,7 @@ export default function AutoMLInsights() {
                 <p className="text-[11px] text-text-secondary uppercase tracking-wider mb-1">Best Model</p>
                 <p className="text-sm font-semibold text-text-primary truncate">{winner?.model || "—"}</p>
               </div>
-              <div className="p-3 rounded-lg bg-orange-50 border border-orange-100">
+              <div className="p-3 rounded-lg bg-primary-light border border-primary-200">
                 <p className="text-[11px] text-primary uppercase tracking-wider mb-1">Score ({winner?.metric})</p>
                 <p className="text-sm font-semibold text-primary">
                   {winner ? winner.score.toFixed(4) : "—"}
@@ -251,7 +251,7 @@ export default function AutoMLInsights() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 items-start">
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+                <div className="w-9 h-9 rounded-lg bg-primary-light flex items-center justify-center text-primary">
                   <BarChart2 size={18} />
                 </div>
                 <div>
@@ -288,7 +288,7 @@ export default function AutoMLInsights() {
             {topDirectional.length > 0 && (
               <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+                  <div className="w-9 h-9 rounded-lg bg-primary-light flex items-center justify-center text-primary">
                     <Lightbulb size={18} />
                   </div>
                   <div>
@@ -320,7 +320,7 @@ export default function AutoMLInsights() {
           {(mlData.statisticalInsights || []).length > 0 && (
             <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+                <div className="w-9 h-9 rounded-lg bg-primary-light flex items-center justify-center text-primary">
                   <BarChart2 size={18} />
                 </div>
                 <div>
@@ -343,7 +343,7 @@ export default function AutoMLInsights() {
                     </div>
                     <p className="text-sm text-text-primary leading-relaxed mb-3">{ins.desc}</p>
                     {Array.isArray(ins.findings) && ins.findings.length > 0 && (
-                      <ul className="space-y-1 pl-2 border-l-2 border-orange-100">
+                      <ul className="space-y-1 pl-2 border-l-2 border-primary-200">
                         {ins.findings.map((f, j) => (
                           <li key={j} className="text-xs text-text-secondary leading-relaxed pl-3">
                             {f}
@@ -364,7 +364,7 @@ export default function AutoMLInsights() {
               className="w-full flex items-center justify-between p-5 text-left"
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+                <div className="w-9 h-9 rounded-lg bg-primary-light flex items-center justify-center text-primary">
                   <Trophy size={18} />
                 </div>
                 <div>
@@ -386,7 +386,7 @@ export default function AutoMLInsights() {
                 {/* ── Inner box 1: Task Identification ── */}
                 <div className="rounded-xl border border-gray-200 p-5">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+                    <div className="w-9 h-9 rounded-lg bg-primary-light flex items-center justify-center text-primary">
                       <Target size={18} />
                     </div>
                     <div>
@@ -456,7 +456,7 @@ export default function AutoMLInsights() {
                 {/* ── Inner box 2: AutoML Tournament ── */}
                 <div className="rounded-xl border border-gray-200 p-5">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+                    <div className="w-9 h-9 rounded-lg bg-primary-light flex items-center justify-center text-primary">
                       <Trophy size={18} />
                     </div>
                     <div>
@@ -510,7 +510,7 @@ export default function AutoMLInsights() {
                       {(mlData.fullLeaderboard || mlData.leaderboard || []).map((m) => {
                         const failed = typeof m.status === "string" && m.status !== "success";
                         return (
-                          <tr key={m.rank} className={`border-t border-gray-50 ${m.isWinner ? "bg-orange-50/40" : ""}`}>
+                          <tr key={m.rank} className={`border-t border-gray-50 ${m.isWinner ? "bg-primary/10" : ""}`}>
                             <td className="py-2 pr-8 text-sm font-medium text-text-primary">
                               {m.rank}{m.isWinner && <span className="ml-1 text-[10px] text-primary font-semibold">★</span>}
                             </td>
@@ -538,7 +538,7 @@ export default function AutoMLInsights() {
                         {mlData.leaderboard.slice(0, 3).map((m, i) => {
                           const primaryMetric = mlData.tournamentMeta?.primaryMetric || m.metric;
                           return (
-                            <div key={m.rank ?? i} className={`p-4 rounded-xl border ${m.isWinner ? "border-primary bg-orange-50/40" : "border-gray-100"}`}>
+                            <div key={m.rank ?? i} className={`p-4 rounded-xl border ${m.isWinner ? "border-primary bg-primary/10" : "border-gray-100"}`}>
                               <div className="flex items-center justify-between mb-2">
                                 <p className="text-sm font-semibold text-text-primary">
                                   #{i + 1} — {m.model}
@@ -632,7 +632,7 @@ export default function AutoMLInsights() {
           <div className="flex justify-end">
             <button
               onClick={() => navigate("/visualizations")}
-              className="py-3.5 px-8 bg-primary hover:bg-orange-600 text-white font-medium text-sm rounded-full flex items-center gap-2 transition-colors"
+              className="py-3.5 px-8 bg-primary hover:bg-primary-600 text-white font-medium text-sm rounded-full flex items-center gap-2 transition-colors"
             >
               Continue to Visualizations <ArrowRight size={16} />
             </button>

@@ -47,7 +47,7 @@ export default function DataPreview() {
         Review your uploaded dataset, preprocessing steps, and exploratory analysis before proceeding.
       </p>
 
-      <div className="flex gap-6 mb-6">
+      <div className="flex flex-col lg:flex-row gap-6 mb-6">
         <div className="flex-1 min-w-0">
           <div className="bg-white rounded-xl border border-gray-200">
             <div className="flex items-center justify-between px-6 py-4">
@@ -67,7 +67,8 @@ export default function DataPreview() {
               </p>
             </div>
 
-            <div className="px-6 pb-2 border-t border-gray-100 overflow-x-auto">
+            <div className="px-4 pb-4 border-t border-gray-100">
+              <div className="overflow-x-auto rounded-lg bg-white">
               <div className="inline-block min-w-full">
               <table className="min-w-full">
                 <thead>
@@ -91,6 +92,7 @@ export default function DataPreview() {
                   ))}
                 </tbody>
               </table>
+              </div>
               </div>
             </div>
 
@@ -126,7 +128,7 @@ export default function DataPreview() {
           </div>
         </div>
 
-        <div className="w-[280px] shrink-0">
+        <div className="w-full lg:w-[280px] lg:shrink-0">
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
@@ -193,14 +195,14 @@ export default function DataPreview() {
             <div className="mt-5 pt-4 border-t border-gray-100">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm text-text-secondary">Data Quality Score</p>
-                <p className={`text-sm font-semibold ${qualityScore >= 80 ? "text-orange-500" : qualityScore >= 50 ? "text-orange-400" : "text-orange-300"}`}>
+                <p className={`text-sm font-semibold ${qualityScore >= 80 ? "text-green-500" : qualityScore >= 50 ? "text-amber-500" : "text-red-500"}`}>
                   {qualityScore}%
                 </p>
               </div>
               <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full ${qualityScore >= 80 ? "bg-orange-500" : qualityScore >= 50 ? "bg-orange-300" : "bg-orange-200"}`}
-                  style={{ width: `${qualityScore}%` }}
+                  className="h-full rounded-full"
+                  style={{ width: `${qualityScore}%`, background: "linear-gradient(to right, #ef4444, #eab308, #22c55e)" }}
                 />
               </div>
             </div>
@@ -229,7 +231,7 @@ export default function DataPreview() {
             <p className="text-sm text-text-secondary">Structure and quality of your data</p>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { label: "Total Rows", value: edaData.datasetOverview.totalRows.toLocaleString() },
             { label: "Total Columns", value: edaData.datasetOverview.totalColumns },
@@ -247,7 +249,7 @@ export default function DataPreview() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center text-primary">

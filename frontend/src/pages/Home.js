@@ -69,7 +69,7 @@ export default function Home({ features = homeFeatures }) {
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-7rem)]">
       <div className="max-w-3xl w-full mx-auto text-center">
-        <h1 className="text-6xl font-extrabold text-text-primary leading-tight mb-4">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-text-primary leading-tight mb-4">
           GenAI Automated{" "}
           <span className="bg-gradient-to-r from-primary to-yellow-500 bg-clip-text text-transparent">Analytical{"\n"}Report</span> Creator
         </h1>
@@ -79,7 +79,7 @@ export default function Home({ features = homeFeatures }) {
           narrative reports.
         </p>
 
-        <div className="flex justify-center gap-4 mb-10">
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
           {features.map(({ icon: Icon, title, desc, color }) => (
             <div
               key={title}
@@ -120,7 +120,7 @@ export default function Home({ features = homeFeatures }) {
             <div className="flex flex-col items-center gap-3">
               {file ? (
                 <>
-                  <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center text-primary">
+                  <div className="w-12 h-12 rounded-full bg-primary-light flex items-center justify-center text-primary">
                     <FilePlus2 size={24} />
                   </div>
                   <p className="text-base font-semibold text-text-primary">{file.name}</p>
@@ -134,7 +134,7 @@ export default function Home({ features = homeFeatures }) {
                 </>
               ) : (
                 <>
-                  <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center text-primary">
+                  <div className="w-12 h-12 rounded-full bg-primary-light flex items-center justify-center text-primary">
                     <Upload size={24} />
                   </div>
                   <p className="text-base font-medium text-text-primary">Drag and drop your file here</p>
@@ -171,7 +171,7 @@ export default function Home({ features = homeFeatures }) {
           <button
             onClick={handleAnalyze}
             disabled={!file || uploading}
-            className="w-full mt-4 py-3.5 rounded-xl text-white font-medium text-base bg-primary hover:bg-orange-600 cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full mt-4 py-3.5 rounded-xl text-white font-medium text-base bg-primary hover:bg-primary-600 cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {uploading ? <Loader2 size={18} className="animate-spin" /> : null}
             {uploading ? "Processing pipeline..." : "Analyze Data"}

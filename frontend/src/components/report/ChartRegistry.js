@@ -110,7 +110,7 @@ const fmtNum = (v) => {
 
 function ChartFrame({ title, subtitle, children, height = 280 }) {
   return (
-    <div className="chart-block bg-white border border-gray-200 rounded-lg px-5 pt-8 pb-5 my-6">
+    <div className="chart-block bg-white border border-gray-200 rounded-lg px-5 pt-8 pb-5 my-2 mx-3">
       <h4 className="text-lg font-semibold text-text-primary mb-1">{title}</h4>
       {subtitle && <p className="text-xs text-text-secondary mb-6">{subtitle}</p>}
       <ResponsiveContainer width="100%" height={height}>

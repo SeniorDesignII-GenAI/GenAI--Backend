@@ -363,7 +363,7 @@ function buildExportHtml({ markdown, mlData, chartImages, target_column, problem
   return `<!doctype html>
 <html><head><meta charset="utf-8"><title>Analysis Report</title>
 <style>
-  @page { size: A4; margin: 18mm 16mm; }
+  @page { size: A4; margin: 18mm 16mm 22mm; }
   * { box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; color: #2A2A2A; font-size: 12px; line-height: 1.55; }
   h1 { font-size: 22px; border-bottom: 2px solid #F97316; padding-bottom: 6px; margin: 0 0 14px; }
@@ -415,7 +415,20 @@ app.post("/api/export", async (req, res) => {
       const imgs = Array.from(document.querySelectorAll("figure.chart-figure img"));
       await Promise.all(imgs.map((img) => (img.complete ? null : new Promise((r) => { img.onload = img.onerror = r; }))));
     });
-    const pdf = await page.pdf({ format: "A4", printBackground: true });
+    const generatedDate = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+    const safeTarget = (target_column || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const pdf = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      displayHeaderFooter: true,
+      headerTemplate: `<div></div>`,
+      footerTemplate: `
+        <div style="font-size:9px;color:#999;width:100%;padding:0 16mm 6mm;display:flex;justify-content:space-between;align-items:center;font-family:-apple-system,Helvetica,Arial,sans-serif;">
+          <span>Generated ${generatedDate}</span>
+          <span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+        </div>`,
+      margin: { top: "18mm", bottom: "22mm", left: "16mm", right: "16mm" },
+    });
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", `attachment; filename="analysis_report.pdf"`);
     res.end(pdf);
